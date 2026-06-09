@@ -81,8 +81,7 @@ function iniciar() {
     let y = Math.floor(i / size);
 
     piece.style.backgroundImage = `url(${imagemAtual})`;
-    piece.style.backgroundPosition =
-      `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
+    piece.dataset.pos = `${x}-${y}`;
 
     piece.setAttribute("draggable", true);
     pieces.push(piece);
@@ -127,24 +126,19 @@ function verificar() {
 
   const pieces = document.querySelectorAll(".piece");
 
-  pieces.forEach((piece, i) => {
-    let esperado = piece.dataset.correct;
+ pieces.forEach((piece, i) => {
 
-    // pega posição atual correta baseada no índice
-    let x = i % size;
-    let y = Math.floor(i / size);
+  let x = i % size;
+  let y = Math.floor(i / size);
 
-    let posEsperada =
-      `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
+  let corretaPos = `${x}-${y}`;
 
-    // compara com tolerance
-    if (piece.style.backgroundPosition !== posEsperada) {
-      correta = false;
-      piece.classList.remove("correct");
-    } else {
-      piece.classList.add("correct");
-    }
-  });
+  if (piece.dataset.pos !== corretaPos) {
+    correta = false;
+  }
+
+});
+``
 
   if (correta === true) {
     clearInterval(intervalo);
