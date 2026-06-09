@@ -125,55 +125,58 @@ function iniciar() {
 function verificar() {
   let correta = true;
 
-  document.querySelectorAll(".piece").forEach((piece, i) => {
+  const pieces = document.querySelectorAll(".piece");
 
+  pieces.forEach((piece, i) => {
+    let esperado = piece.dataset.correct;
+
+    // pega posição atual correta baseada no índice
     let x = i % size;
     let y = Math.floor(i / size);
 
-    let pos = `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
+    let posEsperada =
+      `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
 
-    if (piece.style.backgroundPosition === pos) {
-      piece.classList.add("correct");
-    } else {
+    // compara com tolerance
+    if (piece.style.backgroundPosition !== posEsperada) {
       correta = false;
       piece.classList.remove("correct");
+    } else {
+      piece.classList.add("correct");
     }
   });
 
   if (correta === true) {
-  clearInterval(intervalo);
+    clearInterval(intervalo);
 
-  winSound.play().catch(()=>{});
+    winSound.play().catch(()=>{});
 
-  setTimeout(() => {
+    setTimeout(() => {
+      let overlay = document.createElement("div");
+      overlay.className = "overlay-final";
 
-    let overlay = document.createElement("div");
-    overlay.className = "overlay-final";
+      overlay.innerHTML = `
+        <div class="final-content">
+          <div class="imagem-final"
+              style="background-image: url(${imagens[indiceAtual]});">
+          </div>
 
-    overlay.innerHTML = `
-      <div class="final-content">
-        <div class="imagem-final"
-            style="background-image: url(${imagens[indiceAtual]});">
+          <h2>Nosso momento ❤️</h2>
+          <p>Você montou em ${timer}s</p>
+
+          <button id="btnContinuar">Continuar</button>
         </div>
+      `;
 
-        <h2>Nosso momento ❤️</h2>
-        <p>Você montou em ${timer}s</p>
+      document.body.appendChild(overlay);
 
-        <button id="btnContinuar">Continuar</button>
-      </div>
-    `;
-
-    document.body.appendChild(overlay);
-
-    // ✅ adiciona evento FUNCIONAL
-    document.getElementById("btnContinuar").onclick = function() {
+      document.getElementById("btnContinuar").onclick = function() {
         proximaImagem();
-    };
+      };
 
-  }, 300);
+    }, 300);
+  }
 }
-}
-
 function proximaImagem() {
   indiceAtual++;
 
