@@ -190,3 +190,27 @@ section {
 .hidden {
   display: none;
 }
+.btn-jogo {
+    padding: 14px 28px;
+    font-size: 16px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, #ff6b81, #ff4d6d);
+    color: white;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+
+    transition: all 0.25s ease;
+}
+
+.btn-jogo:hover {
+    transform: scale(1.05);
+}
+
+.btn-jogo:active {
+    transform: scale(0.95);
+}
