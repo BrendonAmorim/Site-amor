@@ -111,15 +111,20 @@ function iniciar() {
         dragged.classList.add("anim");
 
         setTimeout(() => {
-          let temp = piece.style.backgroundPosition;
-          piece.style.backgroundPosition = dragged.style.backgroundPosition;
-          dragged.style.backgroundPosition = temp;
+  let temp = piece.style.backgroundPosition;
+  piece.style.backgroundPosition = dragged.style.backgroundPosition;
+  dragged.style.backgroundPosition = temp;
 
-          piece.classList.remove("anim");
-          dragged.classList.remove("anim");
+  // ✅ ESSA PARTE ESTAVA FALTANDO
+  let tempPos = piece.dataset.pos;
+  piece.dataset.pos = dragged.dataset.pos;
+  dragged.dataset.pos = tempPos;
 
-          verificar();
-        }, 120);
+  piece.classList.remove("anim");
+  dragged.classList.remove("anim");
+
+  verificar();
+}, 120);
       }
     });
   });
