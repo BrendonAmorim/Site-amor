@@ -182,8 +182,8 @@ section {
   font-size: 1.1rem;
 }
 .carta-box p {
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.5rem;
+  font-family: 'Dancing Script', cursive !important;
+  font-size: 1.8rem;
   line-height: 1.8;
 }
 /* ESCONDIDO */
