@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<div class="hearts"></div>
 <div class="container">
   <h1>Monte nossa foto ❤️</h1>
   <div id="tempo">⏱️ 0s</div>
@@ -19,6 +19,23 @@
 <audio id="winSound" src="win.mp3"></audio>
 
 <script>
+  const heartsContainer = document.querySelector(".hearts");
+
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.classList.add("heart-bg");
+  heart.innerHTML = "💙"; // azul
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (12 + Math.random() * 20) + "px";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+  heartsContainer.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 8000);
+}, 400);
 const puzzle = document.getElementById("puzzle");
 const tempoEl = document.getElementById("tempo");
 
