@@ -84,6 +84,8 @@ function iniciar() {
     piece.dataset.pos = `${x}-${y}`;
     piece.style.backgroundPosition =
   `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
+    piece.dataset.pos = `${x}-${y}`;
+
 
     piece.setAttribute("draggable", true);
     pieces.push(piece);
