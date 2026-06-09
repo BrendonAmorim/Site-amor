@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* FUNDO */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+
+    background: linear-gradient(270deg, #eaf4ff, #d6e9ff, #cfe4ff);
+    background-size: 400% 400%;
+    animation: fundo 12s ease infinite;
+}
+
+@keyframes fundo {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* CONTAINER */
+.container {
+    width: 420px;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* BOTÃO */
+button {
+    padding: 12px 24px;
+    margin-bottom: 15px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, #4da6ff, #1e90ff);
+    color: white;
+
+    font-size: 15px;
+    cursor: pointer;
+
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+
+    transition: all 0.25s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* PUZZLE */
+#puzzle {
+    width: 380px;
+    height: 380px;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px;
+}
+
+/* PEÇAS */
+.piece {
+    background-size: 500% 500%;
+    background-repeat: no-repeat;
+
+    border-radius: 8px;
+
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.anim {
+    transform: scale(0.9);
+}
+
+.correct {
+    box-shadow: 0 0 8px rgba(0,255,120,0.8);
+}
+
+/* FINAL ELEGANTE */
+.overlay-final {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,0.7);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CONTEÚDO FINAL */
+.final-content {
+    text-align: center;
+    color: white;
+
+    animation: aparecer 0.5s ease;
+}
+
+/* IMAGEM FINAL */
+.imagem-final {
+    width: 250px;
+    height: 250px;
+
+    margin: 0 auto 20px;
+
+    background-size: cover;
+    background-position: center;
+
+    border-radius: 15px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+    animation: zoom 1.2s ease;
+}
+
+/* ANIMAÇÕES */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoom {
+    from {
+        transform: scale(0.9);
+        filter: blur(4px);
+    }
+    to {
+        transform: scale(1);
+        filter: blur(0);
+    }
+}

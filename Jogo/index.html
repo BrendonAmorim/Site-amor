@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Nosso Momento ❤️</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Monte nossa foto ❤️</h1>
+  <div id="tempo">⏱️ 0s</div>
+  <button onclick="iniciar()">🔄 Embaralhar</button>
+  <div id="puzzle"></div>
+</div>
+
+<!-- sons -->
+<audio id="clickSound" src="click.mp3"></audio>
+<audio id="winSound" src="win.mp3"></audio>
+
+<script>
+const puzzle = document.getElementById("puzzle");
+const tempoEl = document.getElementById("tempo");
+
+const imagens = [
+  "foto1.jpg",
+  "foto2.jpg",
+  "foto3.jpg",
+  "foto4.jpg",
+  "foto5.jpg",
+  "foto6.jpg",
+  "foto7.jpg"
+];
+
+let indiceAtual = 0;
+let size = 5;
+let timer = 0;
+let intervalo;
+
+const clickSound = document.getElementById("clickSound");
+const winSound = document.getElementById("winSound");
+
+function iniciar() {
+  puzzle.innerHTML = "";
+  timer = 0;
+  clearInterval(intervalo);
+
+  intervalo = setInterval(() => {
+    timer++;
+    tempoEl.innerText = `⏱️ ${timer}s`;
+  }, 1000);
+
+  let imagemAtual = imagens[indiceAtual];
+
+  let pieces = [];
+
+  for (let i = 0; i < size * size; i++) {
+    let piece = document.createElement("div");
+    piece.className = "piece";
+
+    let x = i % size;
+    let y = Math.floor(i / size);
+
+    piece.style.backgroundImage = `url(${imagemAtual})`;
+    piece.style.backgroundPosition =
+      `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
+
+    piece.setAttribute("draggable", true);
+    pieces.push(piece);
+  }
+
+  pieces.sort(() => Math.random() - 0.5);
+  pieces.forEach(p => puzzle.appendChild(p));
+
+  let dragged;
+
+  document.querySelectorAll(".piece").forEach(piece => {
+
+    piece.addEventListener("dragstart", () => dragged = piece);
+    piece.addEventListener("dragover", e => e.preventDefault());
+
+    piece.addEventListener("drop", () => {
+      if (dragged !== piece) {
+
+        clickSound.currentTime = 0;
+        clickSound.play().catch(()=>{});
+
+        piece.classList.add("anim");
+        dragged.classList.add("anim");
+
+        setTimeout(() => {
+          let temp = piece.style.backgroundPosition;
+          piece.style.backgroundPosition = dragged.style.backgroundPosition;
+          dragged.style.backgroundPosition = temp;
+
+          piece.classList.remove("anim");
+          dragged.classList.remove("anim");
+
+          verificar();
+        }, 120);
+      }
+    });
+  });
+}
+
+function verificar() {
+  let correta = true;
+
+  document.querySelectorAll(".piece").forEach((piece, i) => {
+
+    let x = i % size;
+    let y = Math.floor(i / size);
+
+    let pos = `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
+
+    if (piece.style.backgroundPosition === pos) {
+      piece.classList.add("correct");
+    } else {
+      correta = false;
+      piece.classList.remove("correct");
+    }
+  });
+
+  if (correta) {
+  clearInterval(intervalo);
+
+  winSound.play().catch(()=>{});
+
+  setTimeout(() => {
+
+    let overlay = document.createElement("div");
+    overlay.className = "overlay-final";
+
+    overlay.innerHTML = `
+      <div class="final-content">
+        <div class="imagem-final"
+            style="background-image: url(${imagens[indiceAtual]});">
+        </div>
+
+        <h2>Nosso momento ❤️</h2>
+        <p>Você montou em ${timer}s</p>
+
+        <button id="btnContinuar">Continuar</button>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // ✅ adiciona evento FUNCIONAL
+    document.getElementById("btnContinuar").onclick = function() {
+        proximaImagem();
+    };
+
+  }, 300);
+}
+}
+
+function proximaImagem() {
+  indiceAtual++;
+  if (indiceAtual >= imagens.length) indiceAtual = 0;
+
+  document.querySelector(".overlay-final").remove();
+  iniciar();
+}
+
+iniciar();
+</script>
+
+</body>
+</html>
