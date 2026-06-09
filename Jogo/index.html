@@ -109,12 +109,13 @@ function iniciar() {
         piece.classList.add("anim");
         dragged.classList.add("anim");
 
-        setTimeout(() => {
+    setTimeout(() => {
+  // troca visual
   let temp = piece.style.backgroundPosition;
   piece.style.backgroundPosition = dragged.style.backgroundPosition;
   dragged.style.backgroundPosition = temp;
 
-  // ✅ ESSA PARTE ESTAVA FALTANDO
+  // 🔥 troca lógica
   let tempPos = piece.dataset.pos;
   piece.dataset.pos = dragged.dataset.pos;
   dragged.dataset.pos = tempPos;
