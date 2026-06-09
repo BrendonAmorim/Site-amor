@@ -228,6 +228,12 @@ btnAbrirCarta.addEventListener("click", () => {
   carta.scrollIntoView({ behavior: "smooth" });
 });
 
+  // ✅ FORÇA COMEÇAR DO TOPO
+window.onload = function () {
+  window.scrollTo(0, 0);
+};
+
+  
 </script>
 
 </body>
