@@ -110,7 +110,8 @@ function verificar() {
     let atual = piece.style.backgroundPosition.trim();
     let esperado = posEsperada.trim();
 
-    if (atual !== esperado) {
+    if (!atual.includes(expected = esperado.split(" ")[0]))
+ {
       correta = false;
     }
   });
