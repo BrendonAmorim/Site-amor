@@ -19,25 +19,6 @@
 <audio id="winSound" src="win.mp3"></audio>
 
 <script>
-  const heartsContainer = document.querySelector(".hearts");
-  const emojis = ["💙", "💚", "💜", "💛", "💝", "🧩"];
-
-setInterval(() => {
-  const heart = document.createElement("div");
-  heart.classList.add("heart-bg");
-
-  heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 20) + "px";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-
-  heartsContainer.appendChild(heart);
-
-  setTimeout(() => heart.remove(), 8000);
-}, 900);
-
-
 const puzzle = document.getElementById("puzzle");
 const tempoEl = document.getElementById("tempo");
 
@@ -70,7 +51,6 @@ function iniciar() {
   }, 1000);
 
   let imagemAtual = imagens[indiceAtual];
-
   let pieces = [];
 
   for (let i = 0; i < size * size; i++) {
@@ -81,10 +61,8 @@ function iniciar() {
     let y = Math.floor(i / size);
 
     piece.style.backgroundImage = `url(${imagemAtual})`;
-    piece.dataset.pos = `${x}-${y}`;
     piece.style.backgroundPosition =
-  `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
-
+      `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
 
     piece.setAttribute("draggable", true);
     pieces.push(piece);
@@ -106,31 +84,18 @@ function iniciar() {
         clickSound.currentTime = 0;
         clickSound.play().catch(()=>{});
 
-        piece.classList.add("anim");
-        dragged.classList.add("anim");
+        let temp = piece.style.backgroundPosition;
+        piece.style.backgroundPosition = dragged.style.backgroundPosition;
+        dragged.style.backgroundPosition = temp;
 
-    setTimeout(() => {
-  // troca visual
-  let temp = piece.style.backgroundPosition;
-  piece.style.backgroundPosition = dragged.style.backgroundPosition;
-  dragged.style.backgroundPosition = temp;
-
-  // 🔥 troca lógica
-  let tempPos = piece.dataset.pos;
-  piece.dataset.pos = dragged.dataset.pos;
-  dragged.dataset.pos = tempPos;
-
-  piece.classList.remove("anim");
-  dragged.classList.remove("anim");
-
-  verificar();
-}, 120);
+        verificar();
       }
     });
+
   });
 }
 
-  function verificar() {
+function verificar() {
   let correta = true;
 
   document.querySelectorAll(".piece").forEach((piece, i) => {
@@ -138,9 +103,10 @@ function iniciar() {
     let x = i % size;
     let y = Math.floor(i / size);
 
-    let esperado = `${x}-${y}`;
+    let posEsperada =
+      `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
 
-    if (piece.dataset.pos !== esperado) {
+    if (piece.style.backgroundPosition !== posEsperada) {
       correta = false;
     }
   });
@@ -160,37 +126,28 @@ function iniciar() {
               style="background-image: url(${imagens[indiceAtual]});">
           </div>
 
-          <h2>Nosso momento ❤️</h2>
-          <p>Você montou em ${timer}s</p>
+          <h2>Você montou! ❤️</h2>
+          <p>Tempo: ${timer}s</p>
 
-          <button id="btnContinuar">Continuar</button>
+          <button id="btnContinuar">Próxima foto</button>
         </div>
       `;
 
       document.body.appendChild(overlay);
 
-      document.getElementById("btnContinuar").onclick = proximaImagem;
+      document.getElementById("btnContinuar").onclick = () => {
+        overlay.remove();
+        indiceAtual++;
+
+        if (indiceAtual >= imagens.length) {
+          indiceAtual = 0;
+        }
+
+        iniciar();
+      };
 
     }, 200);
   }
-}
-function proximaImagem() {
-  indiceAtual++;
-
-  if (indiceAtual >= imagens.length) {
-    indiceAtual = 0;
-  }
-
-  let overlay = document.querySelector(".overlay-final");
-  if (overlay) overlay.remove();
-
-  // 🔥 IMPORTANTE: limpa o puzzle totalmente
-  puzzle.innerHTML = "";
-
-  // 🔥 reinicia com pequeno delay (evita bug visual)
-  setTimeout(() => {
-    iniciar();
-  }, 100);
 }
 
 iniciar();
