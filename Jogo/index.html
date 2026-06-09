@@ -3,10 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <title>Nosso Momento ❤️</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom, #ffd6e7, #ffeaf5);
+}
+
+/* CONTAINER */
+.container {
+    width: 420px;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+/* BOTÃO */
+button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: #4da6ff;
+    color: white;
+    cursor: pointer;
+}
+
+/* GRID */
+#puzzle {
+    width: 380px;
+    height: 380px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+}
+
+/* PEÇAS */
+.piece {
+    background-size: 500% 500%;
+    cursor: grab;
+}
+</style>
 </head>
+
 <body>
-<div class="hearts"></div>
+
 <div class="container">
   <h1>Monte nossa foto ❤️</h1>
   <div id="tempo">⏱️ 0s</div>
@@ -14,7 +65,6 @@
   <div id="puzzle"></div>
 </div>
 
-<!-- sons -->
 <audio id="clickSound" src="click.mp3"></audio>
 <audio id="winSound" src="win.mp3"></audio>
 
@@ -64,6 +114,8 @@ function iniciar() {
     piece.style.backgroundPosition =
       `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
 
+    piece.dataset.pos = i; // 🔥 posição correta
+
     piece.setAttribute("draggable", true);
     pieces.push(piece);
   }
@@ -84,9 +136,15 @@ function iniciar() {
         clickSound.currentTime = 0;
         clickSound.play().catch(()=>{});
 
+        // troca visual
         let temp = piece.style.backgroundPosition;
         piece.style.backgroundPosition = dragged.style.backgroundPosition;
         dragged.style.backgroundPosition = temp;
+
+        // 🔥 troca lógica
+        let tempPos = piece.dataset.pos;
+        piece.dataset.pos = dragged.dataset.pos;
+        dragged.dataset.pos = tempPos;
 
         verificar();
       }
@@ -99,19 +157,7 @@ function verificar() {
   let correta = true;
 
   document.querySelectorAll(".piece").forEach((piece, i) => {
-
-    let x = i % size;
-    let y = Math.floor(i / size);
-
-    let posEsperada =
-      `${(x * 100)/(size - 1)}% ${(y * 100)/(size - 1)}%`;
-
-    // 🔥 NORMALIZA AS STRINGS
-    let atual = piece.style.backgroundPosition.trim();
-    let esperado = posEsperada.trim();
-
-    if (!atual.includes(expected = esperado.split(" ")[0]))
- {
+    if (parseInt(piece.dataset.pos) !== i) {
       correta = false;
     }
   });
@@ -123,18 +169,19 @@ function verificar() {
 
     setTimeout(() => {
       let overlay = document.createElement("div");
-      overlay.className = "overlay-final";
+
+      overlay.style.position = "fixed";
+      overlay.style.inset = "0";
+      overlay.style.background = "rgba(0,0,0,0.7)";
+      overlay.style.display = "flex";
+      overlay.style.justifyContent = "center";
+      overlay.style.alignItems = "center";
 
       overlay.innerHTML = `
-        <div class="final-content">
-          <div class="imagem-final"
-              style="background-image: url(${imagens[indiceAtual]});">
-          </div>
-
-          <h2>Você montou! ❤️</h2>
+        <div style="background:white;padding:20px;border-radius:15px;text-align:center;">
+          <h2>Você montou ❤️</h2>
           <p>Tempo: ${timer}s</p>
-
-          <button id="btnContinuar">Próxima foto</button>
+          <button id="btnContinuar">Próxima 📸</button>
         </div>
       `;
 
@@ -142,11 +189,9 @@ function verificar() {
 
       document.getElementById("btnContinuar").onclick = () => {
         overlay.remove();
-        indiceAtual++;
 
-        if (indiceAtual >= imagens.length) {
-          indiceAtual = 0;
-        }
+        indiceAtual++;
+        if (indiceAtual >= imagens.length) indiceAtual = 0;
 
         iniciar();
       };
