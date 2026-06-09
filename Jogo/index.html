@@ -129,26 +129,22 @@ function iniciar() {
   });
 }
 
-function verificar() {
+  function verificar() {
   let correta = true;
 
-  const pieces = document.querySelectorAll(".piece");
+  document.querySelectorAll(".piece").forEach((piece, i) => {
 
- pieces.forEach((piece, i) => {
+    let x = i % size;
+    let y = Math.floor(i / size);
 
-  let x = i % size;
-  let y = Math.floor(i / size);
+    let esperado = `${x}-${y}`;
 
-  let corretaPos = `${x}-${y}`;
+    if (piece.dataset.pos !== esperado) {
+      correta = false;
+    }
+  });
 
-  if (piece.dataset.pos !== corretaPos) {
-    correta = false;
-  }
-
-});
-``
-
-  if (correta === true) {
+  if (correta) {
     clearInterval(intervalo);
 
     winSound.play().catch(()=>{});
@@ -172,11 +168,9 @@ function verificar() {
 
       document.body.appendChild(overlay);
 
-      document.getElementById("btnContinuar").onclick = function() {
-        proximaImagem();
-      };
+      document.getElementById("btnContinuar").onclick = proximaImagem;
 
-    }, 300);
+    }, 200);
   }
 }
 function proximaImagem() {
