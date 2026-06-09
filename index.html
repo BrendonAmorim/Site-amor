@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nossa História ❤️</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- FUNDO -->
+<div class="hearts"></div>
+
+<header>
+  <h1>Brendon & Ingrid ❤️</h1>
+  <p>Uma história que vale ser lembrada</p>
+  <a href="#timeline" class="btn">Ver nossa história ❤️</a>
+</header>
+
+<section id="timeline" class="fade-section">
+  <h2>📖 Nosso começo</h2>
+
+  <div class="event">
+    <h3>💬 Quando oficializamos</h3>
+    <p>19/08/2023 ❤️</p>
+    <p>Foi quando minha vida começou a fazer sentido...</p>
+  </div>
+</section>
+
+<section id="contador" class="fade-section">
+  <h2>⏱️ Estamos juntos há:</h2>
+  <p id="tempo"></p>
+</section>
+
+<section id="gallery" class="fade-section">
+  <h2>Nossos momentos 📸</h2>
+  <p>Esses são alguns dos nossos momentos mais especiais... ❤️</p>
+
+  <div class="event">
+    <img src="primeira.jpg" class="foto">
+    <p>Um dia simples, mas perfeito com você ❤️</p>
+  </div>
+
+  <div class="event">
+    <img src="coração na areia.jpg" class="foto">
+    <p>Cada momento ao seu lado vale tudo 💖</p>
+  </div>
+
+  <div class="event">
+    <img src="gordinho.jpg" class="foto">
+    <p>Sorrisos que só existem quando estou com você 😊</p>
+  </div>
+
+  <div class="event">
+    <img src="Tribe.jpg" class="foto">
+    <p>Momentos que quero viver pra sempre contigo ❤️</p>
+  </div>
+
+  <div class="event">
+    <img src="primeiro carnaval.jpg" class="foto">
+    <p>Nosso primeiro carnaval juntos ❤️</p>
+  </div>
+
+  <div class="event">
+    <img src="franjinha.jpg" class="foto">
+    <p>Quando você fez franjinha no cabelo ❤️</p>
+  </div>
+
+  <div class="event">
+    <img src="foto linda.jpg" class="foto">
+    <p>Quero você pra vida inteira ❤️</p>
+  </div>
+</section>
+
+<section id="message" class="fade-section">
+  <h2>Para você ❤️</h2>
+  <p class="typing">
+    Tudo o que vivemos até aqui é só o começo...
+  </p>
+</section>
+
+<!-- BOTÃO CARTA -->
+<section class="fade-section">
+  <button id="abrirCarta">Abrir minha carta pra você ❤️</button>
+</section>
+
+<!-- CARTA -->
+<section id="carta" class="fade-section hidden">
+  <div class="carta-box">
+    <h2>💌 Uma carta pra você</h2>
+
+    <p>
+    Ingrid,<br><br>
+
+      Eu poderia tentar escrever mil coisas aqui,  
+      mas nenhuma palavra consegue explicar tudo o que eu sinto por você.<br><br>
+
+      Desde o dia que a gente começou essa história,  
+      minha vida mudou de um jeito que eu nunca imaginei.<br><br>
+
+      Cada momento com você, até os mais simples,  
+      se tornam especiais. E isso é porque é com você.<br><br>
+
+      Eu amo o seu jeito, o seu sorriso,  
+      e principalmente quem eu sou quando estou ao seu lado.<br><br>
+
+      Eu amo voltar pra casa só pra ficar com você e dividir nossos momentos do dia. <br><br>
+      Eu amo escutar sua voz, amo conversar com você, amo quando a gente fica de preguiça em casa.<br><br>
+
+      Enfim, eu amo tudo em você. E quero passar minha vida toda com você <br><br>
+
+      ❤️ Eu te amo ❤️
+    </p>
+
+  </div>
+</section>
+
+<footer>
+  <p>Feito com ❤️ por Brendon</p>
+</footer>
+
+<button id="playBtn">▶️</button>
+
+<audio id="musica" loop>
+  <source src="musica.mp3" type="audio/mp3">
+</audio>
+
+<script>
+
+// CONTADOR
+function atualizarTempo() {
+  const inicio = new Date("2023-08-19T00:00:00");
+  const agora = new Date();
+
+  let diff = agora - inicio;
+
+  let segundos = Math.floor(diff / 1000);
+  let minutos = Math.floor(segundos / 60);
+  let horas = Math.floor(minutos / 60);
+  let dias = Math.floor(horas / 24);
+
+  let anos = Math.floor(dias / 365);
+  let meses = Math.floor((dias % 365) / 30);
+  let diasRestantes = (dias % 365) % 30;
+
+  let horasRestantes = horas % 24;
+  let minutosRestantes = minutos % 60;
+  let segundosRestantes = segundos % 60;
+
+  document.getElementById("tempo").innerHTML =
+    `${anos} anos, ${meses} meses, ${diasRestantes} dias<br>
+    ${horasRestantes}h ${minutosRestantes}m ${segundosRestantes}s ❤️`;
+}
+
+setInterval(atualizarTempo, 1000);
+atualizarTempo();
+
+// MÚSICA
+const btn = document.getElementById("playBtn");
+const audio = document.getElementById("musica");
+
+btn.addEventListener("click", function () {
+  if (audio.paused) {
+    audio.volume = 0;
+    audio.play();
+
+    let vol = 0;
+    let fade = setInterval(() => {
+      if (vol < 1) {
+        vol += 0.05;
+        audio.volume = vol;
+      } else clearInterval(fade);
+    }, 200);
+
+    btn.innerHTML = "⏸️";
+  } else {
+    audio.pause();
+    btn.innerHTML = "▶️";
+  }
+});
+
+// FADE
+const sections = document.querySelectorAll(".fade-section");
+
+window.addEventListener("scroll", () => {
+  sections.forEach(sec => {
+    if (sec.getBoundingClientRect().top < window.innerHeight - 100) {
+      sec.classList.add("show");
+    }
+  });
+});
+
+// FUNDO
+const heartsContainer = document.querySelector(".hearts");
+
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.classList.add("heart-bg");
+  heart.innerHTML = "❤️";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (15 + Math.random() * 25) + "px";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+  heartsContainer.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 8000);
+}, 300);
+
+// CARTA
+const btnAbrirCarta = document.getElementById("abrirCarta");
+const carta = document.getElementById("carta");
+
+btnAbrirCarta.addEventListener("click", () => {
+  carta.classList.remove("hidden");
+
+  setTimeout(() => {
+    carta.classList.add("show");
+  }, 50);
+
+  btnAbrirCarta.style.display = "none";
+
+  carta.scrollIntoView({ behavior: "smooth" });
+});
+
+</script>
+
+</body>
+</html>
