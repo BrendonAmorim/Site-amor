@@ -20,10 +20,13 @@
 
 <script>
   const heartsContainer = document.querySelector(".hearts");
+  const emojis = ["💙", "💚", "💜", "💛", "💝", "🧩"];
+
 setInterval(() => {
   const heart = document.createElement("div");
   heart.classList.add("heart-bg");
-  heart.innerHTML = "🧩"; // azul
+
+  heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
 
   heart.style.left = Math.random() * 100 + "vw";
   heart.style.fontSize = (12 + Math.random() * 20) + "px";
@@ -31,85 +34,10 @@ setInterval(() => {
 
   heartsContainer.appendChild(heart);
 
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
-}, 700);
-setInterval(() => {
-  const heart = document.createElement("div");
-  heart.classList.add("heart-bg");
-  heart.innerHTML = "💙"; // azul
+  setTimeout(() => heart.remove(), 8000);
+}, 600);
 
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 20) + "px";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
 
-  heartsContainer.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
-}, 700);
-  setInterval(() => {
-  const heart = document.createElement("div");
-  heart.classList.add("heart-bg");
-  heart.innerHTML = "💚"; // azul
-
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 20) + "px";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-
-  heartsContainer.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
-}, 700);
-  setInterval(() => {
-  const heart = document.createElement("div");
-  heart.classList.add("heart-bg");
-  heart.innerHTML = "💜"; // azul
-
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 20) + "px";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-
-  heartsContainer.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
-}, 700);
-  setInterval(() => {
-  const heart = document.createElement("div");
-  heart.classList.add("heart-bg");
-  heart.innerHTML = "💛"; // azul
-
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 20) + "px";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-
-  heartsContainer.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
-}, 700);
-  setInterval(() => {
-  const heart = document.createElement("div");
-  heart.classList.add("heart-bg");
-  heart.innerHTML = "💝"; // azul
-
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 20) + "px";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-
-  heartsContainer.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
-}, 700);
 const puzzle = document.getElementById("puzzle");
 const tempoEl = document.getElementById("tempo");
 
@@ -248,10 +176,21 @@ function verificar() {
 
 function proximaImagem() {
   indiceAtual++;
-  if (indiceAtual >= imagens.length) indiceAtual = 0;
 
-  document.querySelector(".overlay-final").remove();
-  iniciar();
+  if (indiceAtual >= imagens.length) {
+    indiceAtual = 0;
+  }
+
+  let overlay = document.querySelector(".overlay-final");
+  if (overlay) overlay.remove();
+
+  // 🔥 IMPORTANTE: limpa o puzzle totalmente
+  puzzle.innerHTML = "";
+
+  // 🔥 reinicia com pequeno delay (evita bug visual)
+  setTimeout(() => {
+    iniciar();
+  }, 100);
 }
 
 iniciar();
